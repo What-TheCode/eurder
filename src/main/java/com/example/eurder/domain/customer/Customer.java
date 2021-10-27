@@ -45,4 +45,8 @@ public class Customer {
     public PhoneNumber getPhoneNumber() {
         return phoneNumber;
     }
+
+    public Object getFullName() {
+        return String.format("%s %s", this.firstName, this.lastName);
+    }
 }

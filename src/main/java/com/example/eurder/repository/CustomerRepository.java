@@ -21,7 +21,7 @@ public class CustomerRepository {
     }
 
     public List<Customer> getCustomers(String customerId) {
-        this.logger.info(String.format("All customers retrieved (%s)", this.customersById.size()));
+        this.logger.info(String.format("All customers retrieved (amount: %s)", this.customersById.size()));
         return this.customersById.values().stream()
                 .filter(customer -> customerId == null || customer.getId().equals(customerId))
                 .collect(Collectors.toList());
@@ -29,6 +29,6 @@ public class CustomerRepository {
 
     public void registerCustomer(Customer customer) {
         this.customersById.put(customer.getId(), customer);
-        this.logger.info(String.format("Customer with id %s created", customer.getId()));
+        this.logger.info(String.format("Customer \"%s\" created", customer.getFullName()));
     }
 }
