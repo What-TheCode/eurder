@@ -20,10 +20,10 @@ public class CustomerRepository {
         this.customersById = new ConcurrentHashMap<>();
     }
 
-    public List<Customer> getCustomers() {
+    public List<Customer> getCustomers(String customerId) {
         this.logger.info(String.format("All customers retrieved (%s)", this.customersById.size()));
-        return this.customersById.entrySet().stream()
-                .map(set -> set.getValue())
+        return this.customersById.values().stream()
+                .filter(customer -> customerId == null || customer.getId().equals(customerId))
                 .collect(Collectors.toList());
     }
 

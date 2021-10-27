@@ -19,8 +19,8 @@ public class CustomerService {
         this.customerMapper = customerMapper;
     }
 
-    public List<CustomerDTO> getCustomers() {
-        return this.customerMapper.toDTO(this.customerRepository.getCustomers());
+    public List<CustomerDTO> getCustomers(String customerId) {
+        return this.customerMapper.toDTO(this.customerRepository.getCustomers(customerId));
     }
 
     public void registerCustomer(CustomerDTO customerDTO) {

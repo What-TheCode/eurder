@@ -20,11 +20,11 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    //TODO Admin id aiuthentication
+    //TODO Admin id authentication
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<CustomerDTO> getCustomers() {
-        return customerService.getCustomers();
+    public List<CustomerDTO> getCustomers(@RequestParam(name = "customerId", required = false) String customerId) {
+        return customerService.getCustomers(customerId);
     }
 
     @PostMapping(consumes = "application/json")
