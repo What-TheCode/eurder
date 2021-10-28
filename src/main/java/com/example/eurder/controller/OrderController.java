@@ -1,15 +1,13 @@
 package com.example.eurder.controller;
 
-import com.example.eurder.domain.order.OrderDTO;
-import com.example.eurder.mapper.OrderMapper;
+import com.example.eurder.domain.order.CreateOrderDTO;
+import com.example.eurder.exception.NoAuthorizationException;
 import com.example.eurder.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@CrossOrigin
 @RequestMapping(path = "/order")
 public class OrderController {
 
@@ -21,8 +19,13 @@ public class OrderController {
 
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addOrder(@PathVariable(name = "customerId") String customerId,
-                         @RequestBody List<OrderDTO> orderDTOList) {
-        this.orderService.addOrders(customerId, orderDTOList);
+    public void addOrder(@RequestParam(name = "customerId") String customerId,
+                         @RequestBody CreateOrderDTO createOrderDTO) {
+        try {
+            this.orderService.addOrders(customerId, createOrderDTO);
+        } catch (NoAuthorizationException nae) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, nae.getMessage());
+        }
+
     }
 }

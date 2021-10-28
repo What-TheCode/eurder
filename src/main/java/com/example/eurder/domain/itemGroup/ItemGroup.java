@@ -6,10 +6,10 @@ import java.util.UUID;
 public class ItemGroup {
     private final String itemId;
     private final int amount;
-    private final LocalDate shippingDate;
+    private LocalDate shippingDate;
 
-    public ItemGroup(int amount, LocalDate shippingDate) {
-        this.itemId = UUID.randomUUID().toString();
+    public ItemGroup(String itemId, int amount, LocalDate shippingDate) {
+        this.itemId = itemId;
         this.amount = amount;
         this.shippingDate = shippingDate;
     }
@@ -24,5 +24,9 @@ public class ItemGroup {
 
     public LocalDate getShippingDate() {
         return shippingDate;
+    }
+
+    public void setShippingDate(LocalDate shippingDate) {
+        this.shippingDate = shippingDate;
     }
 }

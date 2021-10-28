@@ -9,7 +9,7 @@ public class Item {
     private final String name;
     private final String description;
     private final Price price;
-    private final int amount;
+    private int amount;
 
     public Item(String name, String description, Price price, int amount) {
         this.id = UUID.randomUUID().toString();
@@ -45,5 +45,9 @@ public class Item {
 
     public int getAmount() {
         return amount;
+    }
+
+    public void decreaseAmountByOne() {
+        this.amount -= this.amount;
     }
 }
