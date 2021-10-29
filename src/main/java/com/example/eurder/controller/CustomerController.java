@@ -1,10 +1,12 @@
 package com.example.eurder.controller;
 
 import com.example.eurder.domain.customer.CustomerDTO;
+import com.example.eurder.exception.InvalidUserException;
 import com.example.eurder.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -30,6 +32,11 @@ public class CustomerController {
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerCustomer(@RequestBody CustomerDTO customerDTO) {
-        customerService.registerCustomer(customerDTO);
+        try {
+            customerService.registerCustomer(customerDTO);
+        } catch (InvalidUserException iue) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, iue.getMessage());
+        }
+
     }
 }

@@ -2,7 +2,10 @@ package com.example.eurder.domain.customer;
 
 import com.example.eurder.domain.customer.address.Address;
 import com.example.eurder.domain.customer.phoneNumber.PhoneNumber;
+import com.example.eurder.exception.InvalidUserException;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.util.UUID;
 
 public class Customer {
@@ -17,7 +20,7 @@ public class Customer {
         this.id = UUID.randomUUID().toString();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.emailAddress = emailAddress;
+        this.emailAddress = isValidEmailAddress(emailAddress);
         this.address = address;
         this.phoneNumber = phoneNumber;
     }
@@ -48,5 +51,17 @@ public class Customer {
 
     public Object getFullName() {
         return String.format("%s %s", this.firstName, this.lastName);
+    }
+
+
+    //HELPER METHODS
+    public String isValidEmailAddress(String email) {
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            throw new InvalidUserException("Not a valid emailAdress");
+        }
+        return email;
     }
 }
