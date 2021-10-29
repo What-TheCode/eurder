@@ -1,5 +1,6 @@
 package com.example.eurder.domain.order;
 
+import com.example.eurder.domain.item.price.Price;
 import com.example.eurder.domain.itemGroup.ItemGroup;
 
 import java.util.List;
@@ -9,11 +10,13 @@ public class Order {
     private final String id;
     private final String customerId;
     private final List<ItemGroup> itemGroups;
+    private final Price totalPrice;
 
-    public Order(String customerId, List<ItemGroup> itemGroup) {
+    public Order(String customerId, List<ItemGroup> itemGroup, Price totalPriceOrder) {
         this.id = UUID.randomUUID().toString();
         this.customerId = customerId;
         this.itemGroups = itemGroup;
+        this.totalPrice = totalPriceOrder;
     }
 
     public String getId() {
@@ -26,5 +29,9 @@ public class Order {
 
     public List<ItemGroup> getItemGroups() {
         return itemGroups;
+    }
+
+    public Price getTotalPrice() {
+        return totalPrice;
     }
 }

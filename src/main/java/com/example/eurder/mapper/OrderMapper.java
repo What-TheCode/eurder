@@ -1,5 +1,7 @@
 package com.example.eurder.mapper;
 
+import com.example.eurder.domain.item.price.Currency;
+import com.example.eurder.domain.item.price.Price;
 import com.example.eurder.domain.itemGroup.CreateItemGroupDTO;
 import com.example.eurder.domain.itemGroup.ItemGroup;
 import com.example.eurder.domain.itemGroup.ItemgroupDTO;
@@ -14,8 +16,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class OrderMapper {
-
-
     private final ItemRepository itemRepository;
 
     public OrderMapper(ItemRepository itemRepository) {
@@ -23,11 +23,15 @@ public class OrderMapper {
     }
 
     public Order toEntity(String customerId, CreateOrderDTO createOrderDTO) {
+        //TODO Currency absolutely not correct!
         return new Order(customerId,
-                this.toEntity(createOrderDTO.getItemGroups()));
+                this.toEntity(createOrderDTO.getItemGroups()),
+                new Price(Currency.EUR,
+                        createOrderDTO.getItemGroups().stream()
+                                .mapToInt(item -> itemRepository.calculateTotalPrice(item.getItemId(), item.getAmount()))
+                                .sum()));
     }
 
-    //TODO Calculate total price of order
     private List<ItemGroup> toEntity(List<CreateItemGroupDTO> createItemGroupDTOS) {
         return createItemGroupDTOS.stream()
                 .map(this::toEntity)
@@ -36,7 +40,7 @@ public class OrderMapper {
 
     private ItemGroup toEntity(CreateItemGroupDTO createItemGroupDTO) {
         return new ItemGroup(
-                this.itemRepository.getItemById(createItemGroupDTO.getItem()),
+                this.itemRepository.getItemById(createItemGroupDTO.getItemId()),
                 createItemGroupDTO.getAmount()
         );
     }
@@ -46,7 +50,8 @@ public class OrderMapper {
                 order.getId(),
                 order.getItemGroups().stream()
                         .map(this::toDTO)
-                        .collect(Collectors.toList())
+                        .collect(Collectors.toList()),
+                order.getTotalPrice()
         );
     }
 

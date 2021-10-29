@@ -34,7 +34,7 @@ public class OrderService {
             throw new InvalidOrderException("Invalid order.");
         }
         if(!createOrderDTO.getItemGroups().stream()
-                .allMatch(item -> this.itemRepository.isItem(item.getItem()))) {
+                .allMatch(item -> this.itemRepository.isItem(item.getItemId()))) {
             throw new InvalidItemException("Item does not exist.");
         }
 

@@ -45,4 +45,8 @@ public class ItemRepository {
     public boolean isItem(String itemId) {
         return this.itemsById.containsKey(itemId);
     }
+
+    public int calculateTotalPrice(String itemId, int amount) {
+        return this.itemsById.get(itemId).getPrice().getAmount() * amount;
+    }
 }

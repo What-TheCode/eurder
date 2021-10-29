@@ -1,5 +1,7 @@
 package com.example.eurder.domain.itemGroup;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.time.LocalDate;
 
 public class ItemgroupDTO {
@@ -8,6 +10,7 @@ public class ItemgroupDTO {
     private final int amount;
     private final LocalDate shippingDate;
 
+    @JsonCreator
     public ItemgroupDTO(String itemId, String itemName, int amount, LocalDate shippingDate) {
         this.itemId = itemId;
         this.itemName = itemName;

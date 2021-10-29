@@ -2,6 +2,7 @@ package com.example.eurder.domain.user;
 
 import com.example.eurder.domain.user.address.Address;
 import com.example.eurder.domain.user.phoneNumber.PhoneNumber;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class UserDTO {
 
@@ -12,6 +13,7 @@ public class UserDTO {
     private final Address address;
     private final PhoneNumber phoneNumber;
 
+    @JsonCreator
     public UserDTO(String id, String firstName, String lastName, String emailAddress, Address address, PhoneNumber phoneNumber) {
         this.id = id;
         this.firstName = firstName;

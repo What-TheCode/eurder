@@ -1,6 +1,7 @@
 package com.example.eurder.domain.item;
 
 import com.example.eurder.domain.item.price.Price;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class ItemDTO {
     private final String name;
@@ -8,6 +9,7 @@ public class ItemDTO {
     private final Price price;
     private final int amount;
 
+    @JsonCreator
     public ItemDTO(String name, String description, Price price, int amount) {
         this.name = name;
         this.description = description;
