@@ -1,6 +1,7 @@
 package com.example.eurder.service;
 
 import com.example.eurder.domain.user.UserDTO;
+import com.example.eurder.exception.InvalidUserException;
 import com.example.eurder.mapper.CustomerMapper;
 import com.example.eurder.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,10 @@ public class CustomerService {
         this.customerMapper = customerMapper;
     }
 
-    public List<UserDTO> getCustomers(String customerId) {
+    public List<UserDTO> getCustomers(String adminId, String customerId) {
+        if(!this.userRepository.isAdmin(adminId)) {
+            throw new InvalidUserException("User has no access.");
+        }
         return this.customerMapper.toDTO(this.userRepository.getCustomers(customerId));
     }
 

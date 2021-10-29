@@ -52,6 +52,7 @@ public class UserRepository {
     public List<User> getCustomers(String customerId) {
         this.logger.info(String.format("All customers retrieved (amount: %s)", this.customersById.size()));
         return this.customersById.values().stream()
+                .filter(user -> user.getUserRole().equals(UserRole.CUSTOMER))
                 .filter(user -> customerId == null || user.getId().equals(customerId))
                 .collect(Collectors.toList());
     }

@@ -23,7 +23,6 @@ public class ItemService {
         if(!this.userRepository.isAdmin(adminId)) {
             throw new InvalidUserException("User has no access.");
         }
-
         this.itemRepository.addItem(this.itemMapper.toEntity(itemDTO));
     }
 }

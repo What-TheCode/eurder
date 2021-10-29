@@ -25,8 +25,13 @@ public class CustomerController {
     //TODO Admin id authentication
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> getCustomers(@RequestParam(name = "customerId", required = false) String customerId) {
-        return customerService.getCustomers(customerId);
+    public List<UserDTO> getCustomers(@RequestParam(name = "adminId") String adminId,
+                                      @RequestParam(name = "customerId", required = false) String customerId) {
+        try {
+            return customerService.getCustomers(adminId, customerId);
+        } catch (InvalidUserException exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
+        }
     }
 
     @PostMapping(consumes = "application/json")
