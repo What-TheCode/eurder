@@ -18,8 +18,9 @@ public class OrderRepository {
         this.ordersById = new ConcurrentHashMap<>();
     }
 
-    public void addOrders(Order order) {
+    public Order addOrders(Order order) {
         this.ordersById.put(order.getId(), order);
         logger.info(String.format("Order \"%s\" created for customer id: \"%s\"", order.getId(), order.getCustomerId()));
+        return this.ordersById.get(order.getId());
     }
 }

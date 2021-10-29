@@ -1,21 +1,25 @@
 package com.example.eurder.domain.itemGroup;
 
+import com.example.eurder.domain.item.Item;
+
 import java.time.LocalDate;
-import java.util.UUID;
 
 public class ItemGroup {
-    private final String itemId;
-    private final int amount;
-    private LocalDate shippingDate;
+    private static final LocalDate NEXT_DAY_SHIPPING = LocalDate.now().plusDays(1);
+    private static final LocalDate NEXT_WEEK_SHIPPING = LocalDate.now().plusDays(7);
 
-    public ItemGroup(String itemId, int amount, LocalDate shippingDate) {
-        this.itemId = itemId;
+    private final Item item;
+    private final int amount;
+    private final LocalDate shippingDate;
+
+    public ItemGroup(Item item, int amount) {
+        this.item = item;
         this.amount = amount;
-        this.shippingDate = shippingDate;
+        this.shippingDate = calculateShippingDate(item, amount);
     }
 
-    public String getItemId() {
-        return itemId;
+    public Item getItem() {
+        return item;
     }
 
     public int getAmount() {
@@ -26,7 +30,9 @@ public class ItemGroup {
         return shippingDate;
     }
 
-    public void setShippingDate(LocalDate shippingDate) {
-        this.shippingDate = shippingDate;
+
+    //HELPER METHODS
+    private LocalDate calculateShippingDate(Item item, int amountRequestInOrder) {
+        return item.getAmount() >= amountRequestInOrder ? NEXT_DAY_SHIPPING : NEXT_WEEK_SHIPPING;
     }
 }

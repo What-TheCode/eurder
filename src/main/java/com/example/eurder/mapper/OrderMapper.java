@@ -7,10 +7,8 @@ import com.example.eurder.domain.order.CreateOrderDTO;
 import com.example.eurder.domain.order.Order;
 import com.example.eurder.domain.order.OrderDTO;
 import com.example.eurder.repository.ItemRepository;
-import com.example.eurder.repository.OrderRepository;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +24,7 @@ public class OrderMapper {
 
     public Order toEntity(String customerId, CreateOrderDTO createOrderDTO) {
         return new Order(customerId,
-                this.toEntity(createOrderDTO.getCreateItemGroupDTOS()));
+                this.toEntity(createOrderDTO.getItemGroups()));
     }
 
     //TODO Calculate total price of order
@@ -38,9 +36,25 @@ public class OrderMapper {
 
     private ItemGroup toEntity(CreateItemGroupDTO createItemGroupDTO) {
         return new ItemGroup(
-                createItemGroupDTO.getItemId(),
-                createItemGroupDTO.getAmount(),
-                null
+                this.itemRepository.getItemById(createItemGroupDTO.getItem()),
+                createItemGroupDTO.getAmount()
         );
+    }
+
+    public OrderDTO toDTO(Order order) {
+        return new OrderDTO(
+                order.getId(),
+                order.getItemGroups().stream()
+                        .map(this::toDTO)
+                        .collect(Collectors.toList())
+        );
+    }
+
+    private ItemgroupDTO toDTO(ItemGroup itemGroup) {
+        return new ItemgroupDTO(
+                itemGroup.getItem().getId(),
+                itemRepository.getItemById(itemGroup.getItem().getId()).getName(),
+                itemGroup.getAmount(),
+                itemGroup.getShippingDate());
     }
 }

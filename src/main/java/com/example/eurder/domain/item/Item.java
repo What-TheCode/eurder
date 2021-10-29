@@ -47,7 +47,7 @@ public class Item {
         return amount;
     }
 
-    public void decreaseAmountByOne() {
-        this.amount -= this.amount;
+    public void decreaseAmount(int amountToDecrease) {
+        this.amount -= amountToDecrease;
     }
 }

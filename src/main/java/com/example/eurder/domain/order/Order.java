@@ -8,12 +8,12 @@ import java.util.UUID;
 public class Order {
     private final String id;
     private final String customerId;
-    private final List<ItemGroup> itemGroup;
+    private final List<ItemGroup> itemGroups;
 
     public Order(String customerId, List<ItemGroup> itemGroup) {
         this.id = UUID.randomUUID().toString();
         this.customerId = customerId;
-        this.itemGroup = itemGroup;
+        this.itemGroups = itemGroup;
     }
 
     public String getId() {
@@ -24,7 +24,7 @@ public class Order {
         return customerId;
     }
 
-    public List<ItemGroup> getItemGroup() {
-        return itemGroup;
+    public List<ItemGroup> getItemGroups() {
+        return itemGroups;
     }
 }

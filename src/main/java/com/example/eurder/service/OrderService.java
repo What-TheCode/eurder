@@ -1,10 +1,9 @@
 package com.example.eurder.service;
 
-import com.example.eurder.domain.itemGroup.ItemGroup;
-import com.example.eurder.domain.itemGroup.ItemgroupDTO;
 import com.example.eurder.domain.order.CreateOrderDTO;
 import com.example.eurder.domain.order.Order;
 import com.example.eurder.domain.order.OrderDTO;
+import com.example.eurder.exception.InvalidItemException;
 import com.example.eurder.exception.InvalidOrderException;
 import com.example.eurder.exception.NoAuthorizationException;
 import com.example.eurder.mapper.OrderMapper;
@@ -13,14 +12,8 @@ import com.example.eurder.repository.ItemRepository;
 import com.example.eurder.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @Service
 public class OrderService {
-    private static final LocalDate NEXT_DAY_SHIPPING = LocalDate.now().plusDays(1);
-    private static final LocalDate NEXT_WEEK_SHIPPING = LocalDate.now().plusDays(7);
-
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final ItemRepository itemRepository;
@@ -33,38 +26,23 @@ public class OrderService {
         this.orderMapper = orderMapper;
     }
 
-    public void addOrders(String customerId, CreateOrderDTO createOrderDTO) {
-        if(customerRepository.getCustomers(customerId) == null) {
+    public OrderDTO addOrders(String customerId, CreateOrderDTO createOrderDTO) {
+        if(!this.customerRepository.isCustomer(customerId)) {
             throw new NoAuthorizationException("User has no access.");
         }
-        if(createOrderDTO == null) {
+        if(createOrderDTO.getItemGroups().size() == 0) {
             throw new InvalidOrderException("Invalid order.");
         }
-
-//        orderDTO.getItemgroupDTO().stream()
-//                .forEach(itemgroupDTO -> itemgroupDTO =
-//                        ItemgroupDTO.newFullItemGroupDTO(
-//                                itemgroupDTO.getItemId(),
-//                                itemgroupDTO.getAmount(),
-//                                this.calculateShippingDate(itemgroupDTO.getItemId())));
+        if(!createOrderDTO.getItemGroups().stream()
+                .allMatch(item -> this.itemRepository.isItem(item.getItem()))) {
+            throw new InvalidItemException("Item does not exist.");
+        }
 
         Order order = this.orderMapper.toEntity(customerId, createOrderDTO);
 
-        order.getItemGroup().stream()
-                .forEach(itemGroup -> this.calculateShippingDate(itemGroup));
+        order.getItemGroups().stream()
+                .forEach(itemGroup -> itemRepository.getItemById(itemGroup.getItem().getId()).decreaseAmount(itemGroup.getAmount()));
 
-        //TODO check if this works
-        this.orderRepository.addOrders(order);
+        return this.orderMapper.toDTO(this.orderRepository.addOrders(order));
     }
-
-
-    //HELPER METHODS
-
-    private void calculateShippingDate(ItemGroup itemGroup) {
-        boolean isItemInStock = this.itemRepository.isItemInStock(itemGroup.getItemId());
-        itemRepository.decreaseItemAmountByOne(itemGroup.getItemId());
-
-        itemGroup.setShippingDate(isItemInStock ? NEXT_DAY_SHIPPING : NEXT_WEEK_SHIPPING);
-    }
-
 }

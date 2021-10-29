@@ -1,6 +1,11 @@
 package com.example.eurder.controller;
 
+import com.example.eurder.domain.itemGroup.ItemgroupDTO;
 import com.example.eurder.domain.order.CreateOrderDTO;
+import com.example.eurder.domain.order.Order;
+import com.example.eurder.domain.order.OrderDTO;
+import com.example.eurder.exception.InvalidItemException;
+import com.example.eurder.exception.InvalidOrderException;
 import com.example.eurder.exception.NoAuthorizationException;
 import com.example.eurder.service.OrderService;
 import org.springframework.http.HttpStatus;
@@ -17,15 +22,14 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping(consumes = "application/json")
+    @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addOrder(@RequestParam(name = "customerId") String customerId,
-                         @RequestBody CreateOrderDTO createOrderDTO) {
+    public OrderDTO addOrder(@RequestParam(name = "customerId") String customerId,
+                             @RequestBody CreateOrderDTO createOrderDTO) {
         try {
-            this.orderService.addOrders(customerId, createOrderDTO);
-        } catch (NoAuthorizationException nae) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, nae.getMessage());
+            return this.orderService.addOrders(customerId, createOrderDTO);
+        } catch (NoAuthorizationException | InvalidOrderException | InvalidItemException exception) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, exception.getMessage());
         }
-
     }
 }

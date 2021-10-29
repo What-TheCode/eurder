@@ -1,7 +1,11 @@
 package com.example.eurder.domain.itemGroup;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CreateItemGroupDTO {
+    @JsonProperty(value = "itemId")
     private String itemId;
+    @JsonProperty(value = "amount")
     private int amount;
 
 //    public CreateItemGroupDTO(String itemId, int amount) {
@@ -9,7 +13,7 @@ public class CreateItemGroupDTO {
 //        this.amount = amount;
 //    }
 
-    public String getItemId() {
+    public String getItem() {
         return itemId;
     }
 

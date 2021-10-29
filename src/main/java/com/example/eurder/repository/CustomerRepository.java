@@ -47,4 +47,10 @@ public class CustomerRepository {
         this.customersById.put(customer.getId(), customer);
         this.logger.info(String.format("Customer \"%s\" created. Id: \"%s\"", customer.getFullName(), customer.getId()));
     }
+
+
+    //HELPER METHODS
+    public boolean isCustomer(String memberId) {
+        return this.customersById.containsKey(memberId);
+    }
 }
