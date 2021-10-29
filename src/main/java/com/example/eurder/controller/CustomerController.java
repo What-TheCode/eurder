@@ -39,8 +39,8 @@ public class CustomerController {
     public void registerCustomer(@RequestBody UserDTO customerDTO) {
         try {
             customerService.registerCustomer(customerDTO);
-        } catch (InvalidUserException iue) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, iue.getMessage());
+        } catch (InvalidUserException | IllegalArgumentException exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
         }
 
     }

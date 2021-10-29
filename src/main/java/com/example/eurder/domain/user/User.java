@@ -20,8 +20,8 @@ public class User {
     public User(String firstName, String lastName, String emailAddress, Address address, PhoneNumber phoneNumber, UserRole userRole) {
         this.id = UUID.randomUUID().toString();
         this.firstName = firstName;
-        this.lastName = lastName;
-        this.emailAddress = emailAddress;
+        this.lastName = assertValidLastName(lastName);
+        this.emailAddress = assertValidEmailAddress(emailAddress);
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.userRole = userRole;
@@ -30,8 +30,8 @@ public class User {
     public User(String firstName, String lastName, String emailAddress, Address address, PhoneNumber phoneNumber) {
         this.id = UUID.randomUUID().toString();
         this.firstName = firstName;
-        this.lastName = lastName;
-        this.emailAddress = isValidEmailAddress(emailAddress);
+        this.lastName = assertValidLastName(lastName);
+        this.emailAddress = assertValidEmailAddress(emailAddress);
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.userRole = UserRole.CUSTOMER;
@@ -71,13 +71,23 @@ public class User {
 
 
     //HELPER METHODS
-    public String isValidEmailAddress(String email) {
+    public String assertValidEmailAddress(String email) {
+        if(email == null || email.isBlank()) {
+            throw new IllegalArgumentException("Not a valid emailAdress.");
+        }
         try {
             InternetAddress emailAddr = new InternetAddress(email);
             emailAddr.validate();
         } catch (AddressException ex) {
-            throw new InvalidUserException("Not a valid emailAdress");
+            throw new IllegalArgumentException("Not a valid emailAdress.");
         }
         return email;
+    }
+
+    private String assertValidLastName(String lastName) {
+        if(lastName == null || lastName.isBlank()) {
+            throw new IllegalArgumentException("Invalid last name.");
+        }
+        return lastName;
     }
 }
