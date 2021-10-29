@@ -1,8 +1,8 @@
 package com.example.eurder.service;
 
-import com.example.eurder.domain.customer.CustomerDTO;
+import com.example.eurder.domain.user.UserDTO;
 import com.example.eurder.mapper.CustomerMapper;
-import com.example.eurder.repository.CustomerRepository;
+import com.example.eurder.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,20 +10,20 @@ import java.util.List;
 
 @Service
 public class CustomerService {
-    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
     private final CustomerMapper customerMapper;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper) {
-        this.customerRepository = customerRepository;
+    public CustomerService(UserRepository userRepository, CustomerMapper customerMapper) {
+        this.userRepository = userRepository;
         this.customerMapper = customerMapper;
     }
 
-    public List<CustomerDTO> getCustomers(String customerId) {
-        return this.customerMapper.toDTO(this.customerRepository.getCustomers(customerId));
+    public List<UserDTO> getCustomers(String customerId) {
+        return this.customerMapper.toDTO(this.userRepository.getCustomers(customerId));
     }
 
-    public void registerCustomer(CustomerDTO customerDTO) {
-        customerRepository.registerCustomer(customerMapper.toEntity(customerDTO));
+    public void registerCustomer(UserDTO customerDTO) {
+        userRepository.registerCustomer(customerMapper.toEntity(customerDTO));
     }
 }

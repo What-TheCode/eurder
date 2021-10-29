@@ -1,14 +1,12 @@
 package com.example.eurder.controller;
 
-import com.example.eurder.domain.customer.CustomerDTO;
 import com.example.eurder.domain.item.ItemDTO;
-import com.example.eurder.service.CustomerService;
+import com.example.eurder.exception.InvalidUserException;
 import com.example.eurder.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @CrossOrigin
@@ -25,8 +23,14 @@ public class ItemController {
     //TODO Admin id authentication
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerItem(@RequestBody ItemDTO itemDTO) {
-        this.itemService.registerItem(itemDTO);
+    public void registerItem(@RequestParam(name = "adminId") String adminId,
+                             @RequestBody ItemDTO itemDTO) {
+        try {
+            this.itemService.registerItem(adminId, itemDTO);
+        } catch (InvalidUserException exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
+        }
+
     }
 
 

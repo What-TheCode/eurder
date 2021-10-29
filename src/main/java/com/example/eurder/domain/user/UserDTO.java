@@ -1,9 +1,9 @@
-package com.example.eurder.domain.customer;
+package com.example.eurder.domain.user;
 
-import com.example.eurder.domain.customer.address.Address;
-import com.example.eurder.domain.customer.phoneNumber.PhoneNumber;
+import com.example.eurder.domain.user.address.Address;
+import com.example.eurder.domain.user.phoneNumber.PhoneNumber;
 
-public class CustomerDTO {
+public class UserDTO {
 
     private final String id;
     private final String firstName;
@@ -12,7 +12,7 @@ public class CustomerDTO {
     private final Address address;
     private final PhoneNumber phoneNumber;
 
-    public CustomerDTO(String id, String firstName, String lastName, String emailAddress, Address address, PhoneNumber phoneNumber) {
+    public UserDTO(String id, String firstName, String lastName, String emailAddress, Address address, PhoneNumber phoneNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

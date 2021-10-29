@@ -1,6 +1,6 @@
 package com.example.eurder.controller;
 
-import com.example.eurder.domain.customer.CustomerDTO;
+import com.example.eurder.domain.user.UserDTO;
 import com.example.eurder.exception.InvalidUserException;
 import com.example.eurder.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +25,13 @@ public class CustomerController {
     //TODO Admin id authentication
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<CustomerDTO> getCustomers(@RequestParam(name = "customerId", required = false) String customerId) {
+    public List<UserDTO> getCustomers(@RequestParam(name = "customerId", required = false) String customerId) {
         return customerService.getCustomers(customerId);
     }
 
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerCustomer(@RequestBody CustomerDTO customerDTO) {
+    public void registerCustomer(@RequestBody UserDTO customerDTO) {
         try {
             customerService.registerCustomer(customerDTO);
         } catch (InvalidUserException iue) {

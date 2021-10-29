@@ -1,4 +1,4 @@
-package com.example.eurder.domain.customer.phoneNumber;
+package com.example.eurder.domain.user.phoneNumber;
 
 public enum CountryCode {
     NETHERLANDS("+31"),

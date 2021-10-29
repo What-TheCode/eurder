@@ -1,4 +1,4 @@
-package com.example.eurder.domain.customer.address;
+package com.example.eurder.domain.user.address;
 
 public class Address {
     private final String streetName;
